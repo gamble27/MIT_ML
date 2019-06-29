@@ -1,5 +1,5 @@
 def get_sum_metrics(predictions, metrics=[]):
-    return sum([metric(predictions) for metric in metrics]+
+    return sum([metric(predictions) for metric in metrics] +
                [(lambda x:x+i)(predictions) for i in range(3)])
 
 
