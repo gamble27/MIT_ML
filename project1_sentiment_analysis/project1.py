@@ -316,8 +316,18 @@ def classifier_accuracy(
     trained classifier on the training data and the second element is the
     accuracy of the trained classifier on the validation data.
     """
-    # Your code here
-    raise NotImplementedError
+    # training
+    theta, theta_0 = classifier(train_feature_matrix, train_labels, **kwargs)
+
+    # prediction
+    trained_labels = classify(train_feature_matrix, theta, theta_0)
+    pred_labels = classify(val_feature_matrix, theta, theta_0)
+
+    # check accuracy
+    train_accuracy = accuracy(trained_labels, train_labels)
+    val_accuracy = accuracy(pred_labels, val_labels)
+
+    return train_accuracy, val_accuracy
 
 
 def extract_words(input_string):
@@ -340,12 +350,14 @@ def bag_of_words(texts):
 
     Feel free to change this code as guided by Problem 9
     """
-    # Your code here
+    stopwords = get_stopwords()
+
     dictionary = {} # maps word to unique index
     for text in texts:
         word_list = extract_words(text)
         for word in word_list:
-            if word not in dictionary:
+            if      word not in dictionary and \
+                    word not in stopwords:
                 dictionary[word] = len(dictionary)
     return dictionary
 
@@ -367,9 +379,9 @@ def extract_bow_feature_vectors(reviews, dictionary):
 
     for i, text in enumerate(reviews):
         word_list = extract_words(text)
-        for word in word_list:
+        for word in set(word_list):
             if word in dictionary:
-                feature_matrix[i, dictionary[word]] = 1
+                feature_matrix[i, dictionary[word]] = word_list.count(word)
     return feature_matrix
 
 
@@ -379,3 +391,9 @@ def accuracy(preds, targets):
     returns the percentage and number of correct predictions.
     """
     return (preds == targets).mean()
+
+def get_stopwords():
+    with open("stopwords.txt") as f:
+        text = f.read()
+
+    return text.strip().split()

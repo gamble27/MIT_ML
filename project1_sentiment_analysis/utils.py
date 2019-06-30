@@ -125,10 +125,12 @@ def plot_tune_results(algo_name, param_name, param_vals, acc_train, acc_val):
     # make the plot presentable
     algo_name = ' '.join((word.capitalize() for word in algo_name.split(' ')))
     param_name = param_name.capitalize()
-    plt.suptitle('Classification Accuracy vs {} ({})'.format(param_name, algo_name))
+    title = 'Classification Accuracy vs {} ({})'.format(param_name, algo_name)
+    plt.suptitle(title)
     plt.legend(['train','val'], loc='upper right', title='Partition')
     plt.xlabel(param_name)
     plt.ylabel('Accuracy (%)')
+    plt.savefig('{}.png'.format(title))
     plt.show()
 
 def tune(train_fn, param_vals, train_feats, train_labels, val_feats, val_labels):
