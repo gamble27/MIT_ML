@@ -3,30 +3,34 @@ import sys
 import time
 import traceback
 import numpy as np
-import linear_regression
-import svm
-import softmax
-import features
-import kernel
+import project2_mnist.part1.linear_regression as linear_regression
+import project2_mnist.part1.svm as svm
+import project2_mnist.part1.softmax as softmax
+import project2_mnist.part1.features as features
+import project2_mnist.part1.kernel as kernel
 
 sys.path.append("..")
-import utils
-
+import project2_mnist.utils as utils
 verbose = False
 
 epsilon = 1e-6
 
+
 def green(s):
     return '\033[1;32m%s\033[m' % s
+
 
 def yellow(s):
     return '\033[1;33m%s\033[m' % s
 
+
 def red(s):
     return '\033[1;31m%s\033[m' % s
 
+
 def log(*m):
     print(" ".join(map(str, m)))
+
 
 def log_exit(*m):
     log(red("ERROR:"), *m)
@@ -52,6 +56,7 @@ def equals(x, y):
         return (np.abs(x - y) < epsilon).all()
     return -epsilon < x - y < epsilon
 
+
 def check_tuple(ex_name, f, exp_res, *args, **kwargs):
     try:
         res = f(*args, **kwargs)
@@ -67,6 +72,7 @@ def check_tuple(ex_name, f, exp_res, *args, **kwargs):
     if not all(equals(x, y) for x, y in zip(res, exp_res)):
         log(red("FAIL"), ex_name, ": incorrect answer. Expected", exp_res, ", got: ", res)
         return True
+
 
 def check_array(ex_name, f, exp_res, *args):
     try:
@@ -85,6 +91,7 @@ def check_array(ex_name, f, exp_res, *args):
 
         return True
 
+
 def check_list(ex_name, f, exp_res, *args):
     try:
         res = f(*args)
@@ -100,6 +107,7 @@ def check_list(ex_name, f, exp_res, *args):
     if not all(equals(x, y) for x, y in zip(res, exp_res)):
         log(red("FAIL"), ex_name, ": incorrect answer. Expected", exp_res, ", got: ", res)
         return True
+
 
 def check_get_mnist():
     ex_name = "Get MNIST data"
@@ -119,6 +127,7 @@ def check_closed_form():
         return
 
     log(green("PASS"), ex_name, "")
+
 
 def check_svm():
     ex_name = "One vs rest SVM"
@@ -169,6 +178,7 @@ def check_compute_probabilities():
 
     log(green("PASS"), ex_name, "")
 
+
 def check_compute_cost_function():
     ex_name = "Compute cost function"
     n, d, k = 3, 5, 7
@@ -183,6 +193,7 @@ def check_compute_cost_function():
             exp_res, X, Y, zeros, lambda_factor, temp):
         return
     log(green("PASS"), ex_name, "")
+
 
 def check_run_gradient_descent_iteration():
     ex_name = "Run gradient descent iteration"
@@ -210,6 +221,7 @@ def check_run_gradient_descent_iteration():
         return
     softmax.run_gradient_descent_iteration(X, Y, zeros, alpha, lambda_factor, temp)
     log(green("PASS"), ex_name, "")
+
 
 def check_update_y():
     ex_name = "Update y"
@@ -271,6 +283,7 @@ def check_polynomial_kernel():
                 )
     log(green("PASS"), ex_name, "")
 
+
 def check_rbf_kernel():
     ex_name = "RBF kernel"
     n, m, d = 3, 5, 7
@@ -310,6 +323,7 @@ def main():
         check_rbf_kernel()
     except Exception:
         log_exit(traceback.format_exc())
+
 
 if __name__ == "__main__":
     main()

@@ -40,12 +40,12 @@ def run_linear_regression_on_MNIST(lambda_factor=1.0):
 
 
 # Don't run this until the relevant functions in linear_regression.py have been fully implemented.
-l = 1
-print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=l), "lambda =", l)
-l = 0.1
-print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=l), "lambda =", l)
-l = 0.01
-print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=l), "lambda =", l)
+# l = 1
+# print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=l), "lambda =", l)
+# l = 0.1
+# print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=l), "lambda =", l)
+# l = 0.01
+# print('Linear Regression test_error =', run_linear_regression_on_MNIST(lambda_factor=l), "lambda =", l)
 
 """
 the results are:
@@ -77,8 +77,14 @@ def run_svm_one_vs_rest_on_MNIST():
     return test_error
 
 
-print('SVM one vs. rest test_error:', run_svm_one_vs_rest_on_MNIST())
+# print('SVM one vs. rest test_error:', run_svm_one_vs_rest_on_MNIST())
+"""
+the result is:
 
+0.007499999999999951 (C=0.1), the very first run
+0.007299999999999973 (C=0.01)
+0.008499999999999952 (C=1)
+"""
 
 def run_multiclass_svm_on_MNIST():
     """
@@ -93,7 +99,13 @@ def run_multiclass_svm_on_MNIST():
     return test_error
 
 
-print('Multiclass SVM test_error:', run_multiclass_svm_on_MNIST())
+# print('Multiclass SVM test_error:', run_multiclass_svm_on_MNIST())
+"""
+the result is:
+
+0.08189999999999997 - on 'ovr' strategy
+0.06969999999999998 - on 'crammer_singer' strategy
+"""
 
 #######################################################################
 # 4. Multinomial (Softmax) Regression and Gradient Descent
@@ -101,7 +113,7 @@ print('Multiclass SVM test_error:', run_multiclass_svm_on_MNIST())
 
 # TODO: first fill out functions in softmax.py, or run_softmax_on_MNIST will not work
 
-def run_softmax_on_MNIST(temp_parameter=1):
+def run_softmax_on_MNIST(temp_parameter=1.):
     """
     Trains softmax, classifies test data, computes test error, and plots cost function
 
@@ -127,7 +139,14 @@ def run_softmax_on_MNIST(temp_parameter=1):
     #      and print the test_error_mod3
     return test_error
 
-print('softmax test_error=', run_softmax_on_MNIST(temp_parameter=1))
+# print('softmax test_error=', run_softmax_on_MNIST(temp_parameter=1))
+"""
+the results are:
+temperature     error
+0.5             0.08399999999999996
+1               0.10050000000000003
+2               0.1261
+"""
 
 # TODO: Find the error rate for temp_parameter = [.5, 1.0, 2.0]
 #      Remember to return the tempParameter to 1, and re-run run_softmax_on_MNIST

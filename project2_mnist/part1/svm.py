@@ -2,9 +2,6 @@ import numpy as np
 from sklearn.svm import LinearSVC
 
 
-### Functions for you to fill in ###
-
-#pragma: coderesponse template
 def one_vs_rest_svm(train_x, train_y, test_x):
     """
     Trains a linear SVM for binary classifciation
@@ -16,11 +13,11 @@ def one_vs_rest_svm(train_x, train_y, test_x):
     Returns:
         pred_test_y - (m,) NumPy array containing the labels (0 or 1) for each test data point
     """
-    raise NotImplementedError
-#pragma: coderesponse end
+    svc = LinearSVC(C=0.1, random_state=0)
+    svc.fit(train_x, train_y)
+    return svc.predict(test_x)
 
 
-#pragma: coderesponse template
 def multi_class_svm(train_x, train_y, test_x):
     """
     Trains a linear SVM for multiclass classifciation using a one-vs-rest strategy
@@ -32,9 +29,10 @@ def multi_class_svm(train_x, train_y, test_x):
     Returns:
         pred_test_y - (m,) NumPy array containing the labels (int) for each test data point
     """
-    raise NotImplementedError
-#pragma: coderesponse end
+    svc = LinearSVC(C=0.1, random_state=0, multi_class='ovr')
+    svc.fit(train_x, train_y)
+    return svc.predict(test_x)
 
 
 def compute_test_error_svm(test_y, pred_test_y):
-    raise NotImplementedError
+    return 1 - np.mean(test_y == pred_test_y)
