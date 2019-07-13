@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# pragma: coderesponse template
 def project_onto_PC(X, pcs, n_components):
     """
     Given principal component vectors pcs = principal_components(X)
@@ -16,8 +15,14 @@ def project_onto_PC(X, pcs, n_components):
     #       of the eigenvectors returned by principal_components().
     #       Note that each eigenvector is already be a unit-vector,
     #       so the projection may be done using matrix multiplication.
-    raise NotImplementedError
-# pragma: coderesponse end
+
+    # Xc = center_data(X)  # shape = (n, d)
+    # eigenvectors = principal_components(Xc)
+    # principals = eigenvectors[:n_components]  # or without .transpose() ?? # shape = (d, k)
+    return np.dot(
+        center_data(X),
+        pcs.transpose()[:n_components]
+    )
 
 
 ### Functions which are already complete, for you to use ###

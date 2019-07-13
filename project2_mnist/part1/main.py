@@ -111,7 +111,6 @@ the result is:
 # 4. Multinomial (Softmax) Regression and Gradient Descent
 #######################################################################
 
-# TODO: first fill out functions in softmax.py, or run_softmax_on_MNIST will not work
 
 def run_softmax_on_MNIST(temp_parameter=1.):
     """
@@ -139,6 +138,7 @@ def run_softmax_on_MNIST(temp_parameter=1.):
     #      and print the test_error_mod3
     return test_error
 
+
 # print('softmax test_error=', run_softmax_on_MNIST(temp_parameter=1))
 """
 the results are:
@@ -151,26 +151,51 @@ temperature     error
 # TODO: Find the error rate for temp_parameter = [.5, 1.0, 2.0]
 #      Remember to return the tempParameter to 1, and re-run run_softmax_on_MNIST
 
+def run_softmax_on_MNIST_err_mod3(temp_parameter=1):
+    train_x, train_y, test_x, test_y = get_MNIST_data()
+    theta = read_pickle_data("./theta.pkl.gz")
+    test_error = compute_test_error_mod3(test_x, test_y, theta, temp_parameter)
+    return test_error
+
+
+# print('softmax test_error_mod3=', run_softmax_on_MNIST_err_mod3(temp_parameter=1))
+"""
+the result is:
+
+0.07679999999999998
+
+softmax test_error= 0.10050000000000003
+softmax test_error_mod3= 0.07679999999999998
+"""
+
 #######################################################################
 # 6. Changing Labels
 #######################################################################
 
-#pragma: coderesponse template
+
 def run_softmax_on_MNIST_mod3(temp_parameter=1):
     """
     Trains Softmax regression on digit (mod 3) classifications.
 
     See run_softmax_on_MNIST for more info.
     """
-    #YOUR CODE HERE
-    raise NotImplementedError
-#pragma: coderesponse end
+    train_x, train_y, test_x, test_y = get_MNIST_data()
+    train_y %= 3
+    test_y %= 3
 
+    theta, cost_function_history = softmax_regression(train_x, train_y, temp_parameter, alpha= 0.3, lambda_factor = 1.0e-4, k = 10, num_iterations = 150)
+    plot_cost_function_over_time(cost_function_history)
+    test_error = compute_test_error(test_x, test_y, theta, temp_parameter)
+    return test_error
 
 # TODO: Run run_softmax_on_MNIST_mod3(), report the error rate
 
+print('softmax (mod 3) test_error=', run_softmax_on_MNIST_mod3(temp_parameter=1))
+"""
+the result is:
 
-
+softmax (mod 3) test_error= 0.18720000000000003
+"""
 #######################################################################
 # 7. Classification Using Manually Crafted Features
 #######################################################################

@@ -195,8 +195,10 @@ def compute_test_error_mod3(X, Y, theta, temp_parameter):
     Returns:
         test_error - the error rate of the classifier (scalar)
     """
-    #YOUR CODE HERE
-    raise NotImplementedError
+    assigned_labels = get_classification(X, theta, temp_parameter)
+    train_3 = assigned_labels % 3
+    test_3 = Y % 3
+    return 1 - np.mean(train_3 == test_3)
 
 
 def softmax_regression(X, Y, temp_parameter, alpha, lambda_factor, k, num_iterations):
@@ -252,7 +254,6 @@ def plot_cost_function_over_time(cost_function_history):
     plt.plot(range(len(cost_function_history)), cost_function_history)
     plt.ylabel('Cost Function')
     plt.xlabel('Iteration number')
-    plt.savefig('cost_function{}.png'.format(randint(0, len(cost_function_history))))
     plt.show()
 
 
