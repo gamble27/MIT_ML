@@ -21,7 +21,7 @@ def project_onto_PC(X, pcs, n_components):
     # principals = eigenvectors[:n_components]  # or without .transpose() ?? # shape = (d, k)
     return np.dot(
         center_data(X),
-        pcs.transpose()[:n_components]
+        pcs[:, : n_components]
     )
 
 
