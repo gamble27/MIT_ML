@@ -217,11 +217,11 @@ softmax (mod 3) test_error= 0.18720000000000003
 # # TODO: Train your softmax regression model using (train_pca, train_y)
 # #       and evaluate its accuracy on (test_pca, test_y).
 # print("test error pca=", test_error)
-# """
-# the result is:
-#
-# test error pca= 0.1483
-# """
+"""
+the result is:
+
+test error pca= 0.1483
+"""
 #
 # # TODO: Use the plot_PC function in features.py to produce scatterplot
 # #       of the first 100 MNIST images, as represented in the space spanned by the
@@ -245,15 +245,35 @@ softmax (mod 3) test_error= 0.18720000000000003
 
 ## Cubic Kernel ##
 # TODO: Find the 10-dimensional PCA representation of the training and test set
+train_x, train_y, test_x, test_y = get_MNIST_data()
+# n_components = 10
+# pcs = principal_components(train_x)
+# # TODO: First fill out cubicFeatures() function in features.py as the below code requires it.
+# train_cube = cubic_features(project_onto_PC(train_x, pcs, n_components))
+# test_cube = cubic_features(project_onto_PC(test_x, pcs, n_components))
+# # train_cube (and test_cube) is a representation of our training (and test) data
+# # after applying the cubic kernel feature mapping to the 10-dimensional PCA representations.
+#
+# # TODO: Train your softmax regression model using (train_cube, train_y)
+# #       and evaluate its accuracy on (test_cube, test_y).
+# temp_parameter = 1.0
+# theta, cost_function_history = softmax_regression(train_cube, train_y, temp_parameter, alpha=0.3, lambda_factor=1.0e-4, k=10, num_iterations=150)
+# plot_cost_function_over_time(cost_function_history)
+# test_error = compute_test_error(test_cube, test_y, theta, temp_parameter)
 
+n_components = 10
+pcs = principal_components(train_x)
+train_pca10 = cubic_features(project_onto_PC(train_x, pcs, n_components))
+test_pca10 = cubic_features(project_onto_PC(test_x, pcs, n_components))
+temp_parameter = 1.
+theta, cost_function_history = softmax_regression(train_pca10, train_y, temp_parameter, alpha= 0.3, lambda_factor = 1.0e-4, k = 10, num_iterations = 150)
+test_error = compute_test_error(test_pca10, test_y, theta, temp_parameter)
 
-# TODO: First fill out cubicFeatures() function in features.py as the below code requires it.
+print("test error cubic=", test_error)
 
-train_cube = cubic_features(train_pca10)
-test_cube = cubic_features(test_pca10)
-# train_cube (and test_cube) is a representation of our training (and test) data
-# after applying the cubic kernel feature mapping to the 10-dimensional PCA representations.
+"""
+the result is:
 
-
-# TODO: Train your softmax regression model using (train_cube, train_y)
-#       and evaluate its accuracy on (test_cube, test_y).
+test error cubic= 0.7226. fuck.
+                = 0.08650000000000002
+"""
