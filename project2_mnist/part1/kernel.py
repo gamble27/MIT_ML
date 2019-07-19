@@ -2,7 +2,6 @@ import numpy as np
 
 ### Functions for you to fill in ###
 
-# pragma: coderesponse template
 
 
 def polynomial_kernel(X, Y, c, p):
@@ -20,11 +19,10 @@ def polynomial_kernel(X, Y, c, p):
         Returns:
             kernel_matrix - (n, m) Numpy array containing the kernel matrix
     """
-    # YOUR CODE HERE
-    raise NotImplementedError
-# pragma: coderesponse end
-
-# pragma: coderesponse template
+    return np.power(
+        np.dot(X, Y.transpose()) + c,
+        p
+    )
 
 
 def rbf_kernel(X, Y, gamma):
@@ -41,6 +39,15 @@ def rbf_kernel(X, Y, gamma):
         Returns:
             kernel_matrix - (n, m) Numpy array containing the kernel matrix
     """
-    # YOUR CODE HERE
-    raise NotImplementedError
-# pragma: coderesponse end
+    n, m = X.shape[0], Y.shape[0]
+    kernel_matrix = np.zeros((n, m))
+    for i in range(n):
+        for j in range(m):
+            kernel_matrix[i][j] = np.exp(
+                -1*gamma*np.power(np.linalg.norm(X[i] - Y[j]), 2)
+            )
+    return kernel_matrix
+
+
+def kernelized_probabilities():
+    pass
