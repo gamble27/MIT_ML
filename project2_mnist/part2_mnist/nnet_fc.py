@@ -9,9 +9,9 @@ import torch.nn.functional as F
 import torch.nn as nn
 import sys
 sys.path.append("..")
-import utils
-from utils import *
-from train_utils import batchify_data, run_epoch, train_model
+import project2_mnist.utils as utils
+from project2_mnist.utils import *
+from project2_mnist.part2_mnist.train_utils import batchify_data, run_epoch, train_model
 
 def main():
     # Load the dataset
@@ -39,11 +39,11 @@ def main():
     #################################
     ## Model specification TODO
     model = nn.Sequential(
-              nn.Linear(784, 10),
+              nn.Linear(784, 128),
               nn.ReLU(),
-              nn.Linear(10, 10),
+              nn.Linear(128, 10),
             )
-    lr=0.1
+    lr=0.1  # learning rate
     momentum=0
     ##################################
 

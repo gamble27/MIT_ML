@@ -13,25 +13,25 @@ import math
 """
 
 
-#pragma: coderesponse template
 def rectified_linear_unit(x):
-    """ Returns the ReLU of x, or the maximum between 0 and x."""
-    # TODO
-#pragma: coderesponse end
+    """ Returns the ReLU of scalar x, or the maximum between 0 and x."""
+    return max(0, x)
 
-#pragma: coderesponse template
+
 def rectified_linear_unit_derivative(x):
-    """ Returns the derivative of ReLU."""
-    # TODO
-#pragma: coderesponse end
+    """ Returns the derivative of scalar ReLU."""
+    return 1 if x > 0 else 0
+
 
 def output_layer_activation(x):
     """ Linear function, returns input as is. """
     return x
 
+
 def output_layer_activation_derivative(x):
     """ Returns the derivative of a linear function: 1. """
     return 1
+
 
 class NeuralNetwork():
     """
@@ -45,6 +45,7 @@ class NeuralNetwork():
     def __init__(self):
 
         # DO NOT CHANGE PARAMETERS
+        # todo: delete deprecated np.matrix
         self.input_to_hidden_weights = np.matrix('1 1; 1 1; 1 1')
         self.hidden_to_output_weights = np.matrix('1 1 1')
         self.biases = np.matrix('0; 0; 0')
@@ -53,48 +54,49 @@ class NeuralNetwork():
         self.training_points = [((2,1), 10), ((3,3), 21), ((4,5), 32), ((6, 6), 42)]
         self.testing_points = [(1,1), (2,2), (3,3), (5,5), (10,10)]
 
-#pragma: coderesponse template prefix="class NeuralNetwork(NeuralNetworkBase):\n\n"
     def train(self, x1, x2, y):
 
         ### Forward propagation ###
         input_values = np.matrix([[x1],[x2]]) # 2 by 1
 
         # Calculate the input and activation of the hidden layer
-        hidden_layer_weighted_input = # TODO (3 by 1 matrix)
-        hidden_layer_activation = # TODO (3 by 1 matrix)
+        hidden_layer_weighted_input = np.matmul(
+            input_values.transpose(), self.input_to_hidden_weights.transpose()
+        ).transpose() + self.biases
+        hidden_layer_activation = np.vectorize(rectified_linear_unit)(hidden_layer_weighted_input)
 
-        output =  # TODO
-        activated_output = # TODO
+        output =  np.matmul(
+            self.hidden_to_output_weights,
+            hidden_layer_activation
+        ).item(0) # should be a scalar
+        activated_output = output_layer_activation(output)
 
-        ### Backpropagation ###
+        ### Back propagation ###
 
         # Compute gradients
-        output_layer_error = # TODO
-        hidden_layer_error = # TODO (3 by 1 matrix)
+        output_layer_error = np.power(y - activated_output, 2)/2
+        hidden_layer_error = output - y# (3 by 1 matrix) d L/d output ??
 
-        bias_gradients = # TODO
-        hidden_to_output_weight_gradients = # TODO
-        input_to_hidden_weight_gradients = # TODO
+        bias_gradients = ...# TODO
+        hidden_to_output_weight_gradients = ...# TODO
+        input_to_hidden_weight_gradients = ...# TODO
 
         # Use gradients to adjust weights and biases using gradient descent
-        self.biases = # TODO
-        self.input_to_hidden_weights = # TODO
-        self.hidden_to_output_weights = # TODO
-#pragma: coderesponse end
+        self.biases = ...# TODO
+        self.input_to_hidden_weights = ...# TODO
+        self.hidden_to_output_weights = ...# TODO
 
-#pragma: coderesponse template prefix="class NeuralNetwork(NeuralNetworkBase):\n\n"
     def predict(self, x1, x2):
 
         input_values = np.matrix([[x1],[x2]])
 
         # Compute output for a single input(should be same as the forward propagation in training)
-        hidden_layer_weighted_input = # TODO
-        hidden_layer_activation = # TODO
-        output = # TODO
-        activated_output = # TODO
+        hidden_layer_weighted_input = ...# TODO
+        hidden_layer_activation = ...# TODO
+        output = ...# TODO
+        activated_output = ...# TODO
 
         return activated_output.item()
-#pragma: coderesponse end
 
     # Run this to train your neural network once you complete the train method
     def train_neural_network(self):
