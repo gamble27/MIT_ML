@@ -2,8 +2,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from train_utils import batchify_data, run_epoch, train_model, Flatten
-import utils_multiMNIST as U
+from project2_mnist.part2_twodigit.train_utils import batchify_data, run_epoch, train_model, Flatten
+import project2_mnist.part2_twodigit.utils_multiMNIST as U
 path_to_data_dir = '../Datasets/'
 use_mini_dataset = True
 
@@ -13,21 +13,20 @@ nb_epoch = 30
 num_classes = 10
 img_rows, img_cols = 42, 28 # input image dimensions
 
-#pragma: coderesponse template name="mlp"
 class MLP(nn.Module):
 
     def __init__(self, input_dimension):
         super(MLP, self).__init__()
         self.flatten = Flatten()
-        # TODO initialize model layers here
+        self.linear1  = nn.Linear(input_dimension, 64)
+        self.linear2 = nn.Linear(64, 20)
 
     def forward(self, x):
         xf = self.flatten(x)
-
-        # TODO use model layers to predict the two digits
-
+        xf = self.linear1(xf)
+        xf = self.linear2(xf)
+        out_first_digit, out_second_digit = xf[:, 0:10], xf[:, 10:]
         return out_first_digit, out_second_digit
-#pragma: coderesponse end
 
 def main():
     X_train, y_train, X_test, y_test = U.get_data(path_to_data_dir, use_mini_dataset)
@@ -51,7 +50,7 @@ def main():
 
     # Load model
     input_dimension = img_rows * img_cols
-    model = MLP(input_dimension) # TODO add proper layers to MLP class above
+    model = MLP(input_dimension) # neTODO add proper layers to MLP class above
 
     # Train
     train_model(train_batches, dev_batches, model)
