@@ -2,8 +2,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from train_utils import batchify_data, run_epoch, train_model, Flatten
-import utils_multiMNIST as U
+from project2_mnist.part2_twodigit.train_utils import batchify_data, run_epoch, train_model, Flatten
+import project2_mnist.part2_twodigit.utils_multiMNIST as U
 path_to_data_dir = '../Datasets/'
 use_mini_dataset = True
 
@@ -15,19 +15,51 @@ img_rows, img_cols = 42, 28 # input image dimensions
 
 
 
-#pragma: coderesponse template name="cnn"
 class CNN(nn.Module):
 
     def __init__(self, input_dimension):
         super(CNN, self).__init__()
-        # TODO initialize model layers here
+
+        self.conv_size1 = 32
+        self.conv_size2 = 64
+        self.linear_size = 128
+
+        self.conv2d1 = nn.Conv2d(1, self.conv_size1, (3, 5))
+        self.conv2d2 = nn.Conv2d(
+            self.conv_size1, self.conv_size2, (3, 5)
+        )
+
+        self.pool2d1 = nn.MaxPool2d((3, 3))
+        self.pool2d2 = nn.MaxPool2d((3, 3))
+
+        self.linear1 = nn.Linear(192, self.linear_size)
+        self.linear2 = nn.Linear(self.linear_size, 20)
+
+        self.flatten = Flatten()
+        self.ReLU = nn.ReLU()
+        self.dropout = nn.Dropout(0.5)
 
     def forward(self, x):
+        xf = self.conv2d1(x)
+        xf = self.ReLU(xf)
+        xf = self.pool2d1(xf)
 
-        # TODO use model layers to predict the two digits
+        xf = self.conv2d2(xf)
+        xf = self.ReLU(xf)
+        xf = self.pool2d2(xf)
+
+        xf = self.flatten(xf)
+
+        xf = self.linear1(xf)
+        xf = self.dropout(xf)
+
+        xf = self.linear2(xf)
+
+        out_first_digit = xf[:, :10]
+        out_second_digit = xf[:, 10:]
 
         return out_first_digit, out_second_digit
-#pragma: coderesponse end
+
 
 def main():
     X_train, y_train, X_test, y_test = U.get_data(path_to_data_dir, use_mini_dataset)
