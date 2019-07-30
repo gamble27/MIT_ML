@@ -92,7 +92,6 @@ class NeuralNetwork():
         self.hidden_to_output_weights = self.hidden_to_output_weights - self.learning_rate * hidden_to_output_weight_gradients.T
         self.biases = self.biases - self.learning_rate * bias_gradients
         self.input_to_hidden_weights = self.input_to_hidden_weights - self.learning_rate * input_to_hidden_weight_gradients
-        print("hello world")
 
     def predict(self, x1, x2):
 
