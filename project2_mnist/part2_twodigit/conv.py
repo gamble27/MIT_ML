@@ -86,7 +86,7 @@ def main():
     model = CNN(input_dimension) # TODO add proper layers to CNN class above
 
     # Train
-    train_model(train_batches, dev_batches, model)
+    train_model(train_batches, dev_batches, model, nesterov=True, n_epochs=14)
 
     ## Evaluate the model on test data
     loss, acc = run_epoch(test_batches, model.eval(), None)
