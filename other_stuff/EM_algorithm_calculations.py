@@ -91,10 +91,17 @@ def EM_step(X, means, dispersions, cluster_probabilities):
 class EMTestingModules(unittest.TestCase):
 
     def setUp(self) -> None:
+        # for lecture
         self.X = np.array([0.2, -0.9, -1, 1.2, 1.8])
         self.means = np.array([-3, 2])
         self.dispersions = np.array([4, 4])
         self.cluster_probabilities = np.array([0.5, 0.5])
+
+        # for homework
+        self.X_h = np.array([-1, 0, 4, 5, 6], float)
+        self.means_h = np.array([6, 7], float)
+        self.dispersions_h = np.array([1, 4],float)
+        self.cluster_probabilities_h = np.array([-1, 0, 4, 5, 6])
 
     def test_1_scalar(self):
         """
@@ -130,6 +137,38 @@ class EMTestingModules(unittest.TestCase):
             print(i+1, prior_probability(
                 x, self.means, self.dispersions, self.cluster_probabilities
             ), sep=' : ')
+
+    def test_4_scalar_shift_gauss(self):
+        """
+        test for homework 5
+        tells which gaussian
+        shifts more to the left
+        """
+        print("test 4 shifted Gaussians")
+
+        means, vars, cl_probs = EM_step(
+            self.X_h, self.means_h, self.dispersions_h, self.cluster_probabilities_h
+        )
+        for i in range(means.shape[0]):
+            print(f"shift {i+1}: {self.means_h[i] - means[i]}")
+
+        self.assertEqual(means.shape[0], 2)
+
+    def test_5_scalar_variance(self):
+        """
+        test for homework 5
+        tells which variance
+        is greater
+        """
+        print("test 5 comparing variances")
+
+        means, vars, cl_probs = EM_step(
+            self.X_h, self.means_h, self.dispersions_h, self.cluster_probabilities_h
+        )
+
+        self.assertEqual(means.shape[0], 2)
+
+        print(vars[0], vars[1])
 
 
 if __name__ == "__main__":
