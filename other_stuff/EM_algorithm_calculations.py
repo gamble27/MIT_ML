@@ -101,7 +101,7 @@ class EMTestingModules(unittest.TestCase):
         self.X_h = np.array([-1, 0, 4, 5, 6], float)
         self.means_h = np.array([6, 7], float)
         self.dispersions_h = np.array([1, 4],float)
-        self.cluster_probabilities_h = np.array([-1, 0, 4, 5, 6])
+        self.cluster_probabilities_h = np.array([0.5, 0.5])
 
     def test_1_scalar(self):
         """
@@ -143,6 +143,7 @@ class EMTestingModules(unittest.TestCase):
         test for homework 5
         tells which gaussian
         shifts more to the left
+        after 1st EM step
         """
         print("test 4 shifted Gaussians")
 
@@ -154,11 +155,12 @@ class EMTestingModules(unittest.TestCase):
 
         self.assertEqual(means.shape[0], 2)
 
-    def test_5_scalar_variance(self):
+    def test_5_scalar_variance_1step(self):
         """
         test for homework 5
         tells which variance
         is greater
+        after 1st EM step
         """
         print("test 5 comparing variances")
 
@@ -169,6 +171,28 @@ class EMTestingModules(unittest.TestCase):
         self.assertEqual(means.shape[0], 2)
 
         print(vars[0], vars[1])
+
+    def test_6_scalar_variance_conv(self):
+        """
+        test for homework 5
+        tells variances
+        after algorithm converges
+        """
+        print("test 6 comparing variances after convergence")
+
+        means, vars, cl_probs = EM_step(
+            self.X_h, self.means_h, self.dispersions_h, self.cluster_probabilities_h
+        )
+        while True:
+            new_means, new_vars, new_cl_probs = EM_step(
+                self.X_h, means, vars, cl_probs
+            )
+            if np.linalg.norm(new_means - means) <= 1e-6 :
+                break
+            else:
+                means, vars, cl_probs = new_means, new_vars, new_cl_probs
+
+        print(new_vars)
 
 
 if __name__ == "__main__":
