@@ -17,7 +17,7 @@ def normal(x: np.ndarray, mean: np.ndarray, dispersion: float) -> float:
     :return: float probability density
     """
     return np.exp(
-        -1 * np.square(np.linalg.norm(x - mean)) / (2 * dispersion)
+        -1 * (np.linalg.norm(x - mean)**2) / (2 * dispersion)
     ) / (
         np.power(2 * np.pi * dispersion, x.shape[0]/2)
     )

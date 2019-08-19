@@ -117,4 +117,30 @@ def fill_matrix(X: np.ndarray, mixture: GaussianMixture) -> np.ndarray:
     Returns
         np.ndarray: a (n, d) array with completed data
     """
-    raise NotImplementedError
+    n_cases = X.shape[0]
+    n_clusters = mixture.p.shape[0]
+
+    Cu = np.abs(np.sign(X))
+
+    f = np.zeros((n_cases, n_clusters))
+    for j in range(n_clusters):
+        for i in range(n_cases):
+            d = np.sum(np.abs(np.sign(X[i])))
+            f[i, j] = (np.log(mixture.p[j] + 1e-16) -
+                       (np.linalg.norm((X[i] - mixture.mu[j]) * Cu[i]) ** 2) / (2 * mixture.var[j]) -
+                       np.log(2 * np.pi * mixture.var[j]) * d / 2)
+
+    log_post = np.zeros((n_cases, n_clusters))
+    for i in range(n_cases):
+        log_post[i] = f[i] - logsumexp(f[i])
+    post = np.exp(log_post)
+
+    new_X = np.zeros(X.shape)
+    for i in range(X.shape[0]):
+        for j in range(X.shape[1]):
+            if X[i, j] > 0:
+                new_X[i, j] = X[i, j]
+            else:
+                new_X[i, j] = np.sum(post[i, :] * mixture.mu[:, j]) / np.sum(post[i, :])
+
+    return new_X
