@@ -25,7 +25,7 @@ from project3_netflix.common import init, bic, plot
 
 K = 3
 f = []
-for seed in range(10):
+for seed in range(5):
     X = np.loadtxt("toy_data.txt")
     mixture, post = init(X, K, seed)
     mix, pst, log_likelihood = run_naive_em(X, mixture, post)
