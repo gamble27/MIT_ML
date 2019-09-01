@@ -113,6 +113,16 @@ def load_game_data():
 
 # take a step in the game
 def step_game(current_room_desc, current_quest_desc, action_index, object_index):
+    """
+
+    :param current_room_desc (str):   current room description
+    :param current_quest_desc (str):  current quest description
+    :param action_index (int):        action index
+    :param object_index (int):        object index
+    :return:    next room description,
+                next quest description,
+                reward, terminal
+    """
     global STEP_COUNT
     STEP_COUNT = STEP_COUNT+1
     terminal = (STEP_COUNT >= MAX_STEPS)
