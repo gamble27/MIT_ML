@@ -176,6 +176,7 @@ def run():
             "Avg reward: {:0.6f} | Ewma reward: {:0.6f}".format(
                 np.mean(single_run_epoch_rewards_test),
                 utils.ewma(single_run_epoch_rewards_test)))
+    print(np.mean(single_run_epoch_rewards_test[-20:]))
     return single_run_epoch_rewards_test
 
 
@@ -195,10 +196,17 @@ if __name__ == '__main__':
 
     epoch_rewards_test = np.array(epoch_rewards_test)
 
+    epoch_rewards_test.tofile("epoch_10_rewards.dat")
+
     x = np.arange(NUM_EPOCHS)
+    y = np.mean(epoch_rewards_test, axis=0)
     fig, axis = plt.subplots()
-    axis.plot(x, np.mean(epoch_rewards_test,
-                         axis=0))  # plot reward per epoch averaged per run
+    axis.plot(x, y)  # plot reward per epoch averaged per run
+    # print(np.mean(np.mean(epoch_rewards_test, axis=0)[-20:]))
+    # print(np.mean(np.mean(epoch_rewards_test, axis=0)[-50:]))
+    # print(np.mean(np.mean(epoch_rewards_test, axis=0)[-100:]))
+    # print(np.mean(epoch_rewards_test))
+
     axis.set_xlabel('Epochs')
     axis.set_ylabel('reward')
     axis.set_title(('Linear: nRuns=%d, Epilon=%.2f, Epi=%d, alpha=%.4f' %
