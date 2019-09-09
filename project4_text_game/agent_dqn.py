@@ -153,6 +153,8 @@ def run_episode(for_training):
 
         # prepare next step
         t += 1
+        current_room_desc = next_room_desc
+        current_quest_desc = next_quest_desc
 
     if not for_training:
         return epi_reward

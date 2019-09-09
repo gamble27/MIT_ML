@@ -135,6 +135,10 @@ def run_episode(is_for_training: bool):
 
         # prepare next step
         t += 1
+        current_room_desc = next_room_desc
+        current_quest_desc = next_quest_desc
+        current_room_index = dict_room_desc[current_room_desc]
+        current_quest_index = dict_quest_desc[current_quest_desc]
 
     if not is_for_training:
         return epi_reward

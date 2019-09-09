@@ -14,7 +14,7 @@ GAMMA = 0.5  # discounted factor
 TRAINING_EP = 0.5  # epsilon-greedy parameter for training
 TESTING_EP = 0.05  # epsilon-greedy parameter for testing
 NUM_RUNS = 5  # 10
-NUM_EPOCHS = 600
+NUM_EPOCHS = 600 * 5
 NUM_EPIS_TRAIN = 25  # number of episodes for training at each epoch
 NUM_EPIS_TEST = 50  # number of episodes for testing
 ALPHA = 0.001  # learning rate for training
@@ -145,6 +145,8 @@ def run_episode(is_for_training):
 
         # prepare next step
         t += 1
+        current_room_desc = next_room_desc
+        current_quest_desc = next_quest_desc
 
     if not is_for_training:
         return epi_reward
@@ -176,7 +178,7 @@ def run():
             "Avg reward: {:0.6f} | Ewma reward: {:0.6f}".format(
                 np.mean(single_run_epoch_rewards_test),
                 utils.ewma(single_run_epoch_rewards_test)))
-    print(np.mean(single_run_epoch_rewards_test[-20:]))
+    # print(np.mean(single_run_epoch_rewards_test[-20:]))
     return single_run_epoch_rewards_test
 
 
@@ -211,12 +213,10 @@ if __name__ == '__main__':
     axis.set_ylabel('reward')
     axis.set_title(('Linear: nRuns=%d, Epilon=%.2f, Epi=%d, alpha=%.4f' %
                     (NUM_RUNS, TRAINING_EP, NUM_EPIS_TRAIN, ALPHA)))
+
+    axis.minorticks_on()
+    axis.grid(which='major', color='k', linestyle=':')
+    axis.grid(which='minor', color='k', linestyle=':')
+
     os.system('spd-say "your program has finished"')
     plt.show()
-    """
-    Avg reward: 0.193014 | Ewma reward: 0.214379: 100%|█| 600/600 [06:04<00:00,  1.62it/s]
-    Avg reward: 0.192132 | Ewma reward: 0.187196: 100%|█| 600/600 [06:09<00:00,  1.56it/s]
-    Avg reward: 0.195904 | Ewma reward: 0.214363: 100%|█| 600/600 [07:00<00:00,  1.55it/s]
-    Avg reward: 0.194645 | Ewma reward: 0.194678: 100%|█| 600/600 [06:05<00:00,  1.64it/s]
-    Avg reward: 0.187563 | Ewma reward: 0.195722: 100%|█| 600/600 [07:26<00:00,  1.12s/it]
-    """
